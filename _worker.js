@@ -54,9 +54,9 @@ const ADMIN_PASSWORD = "root1234qwer-"; // 请替换为你实际的密码
 
 export default {
     async fetch(request, env, ctx) {
-        // 新增：从环境变量中获取管理员用户名和密码
-        const adminUsername = env.ADMIN_USERNAME || ADMIN_USERNAME;
-        const adminPassword = env.ADMIN_PASSWORD || ADMIN_PASSWORD;
+        // 使用Cloudflare自带的变量存储密码
+        const adminUsername = env.ADMIN_USERNAME;
+        const adminPassword = env.ADMIN_PASSWORD;
 
         // 新增：验证用户名和密码
         const authHeader = request.headers.get('Authorization');

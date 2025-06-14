@@ -48,9 +48,6 @@ let link = [];
 let banHosts = [atob('c3BlZWQuY2xvdWRmbGFyZS5jb20=')];
 let SCV = 'true';
 let allowInsecure = '&allowInsecure=1';
-// 新增：管理员用户名和密码
-const ADMIN_USERNAME = "root"; // 请替换为你实际的用户名
-const ADMIN_PASSWORD = "root1234qwer-"; // 请替换为你实际的密码
 
 export default {
     async fetch(request, env, ctx) {

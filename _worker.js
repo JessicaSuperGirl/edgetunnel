@@ -48,8 +48,36 @@ let link = [];
 let banHosts = [atob('c3BlZWQuY2xvdWRmbGFyZS5jb20=')];
 let SCV = 'true';
 let allowInsecure = '&allowInsecure=1';
+// 新增：管理员用户名和密码
+const ADMIN_USERNAME = ""; // 请替换为你实际的用户名
+const ADMIN_PASSWORD = ""; // 请替换为你实际的密码
+
 export default {
     async fetch(request, env, ctx) {
+        // 新增：从环境变量中获取管理员用户名和密码
+        const adminUsername = env.ADMIN_USERNAME || ADMIN_USERNAME;
+        const adminPassword = env.ADMIN_PASSWORD || ADMIN_PASSWORD;
+
+        // 新增：验证用户名和密码
+        const authHeader = request.headers.get('Authorization');
+        if (adminUsername && adminPassword) {
+            if (!authHeader) {
+                return new Response('需要身份验证', {
+                    status: 401,
+                    headers: { 'WWW-Authenticate': 'Basic realm="Cloudflare Worker"' },
+                });
+            }
+
+            const auth = authHeader.split(' ')[1];
+            const [user, pass] = atob(auth).split(':');
+
+            if (user !== adminUsername || pass !== adminPassword) {
+                return new Response('用户名或密码不正确', {
+                    status: 401,
+                    headers: { 'WWW-Authenticate': 'Basic realm="Cloudflare Worker"' },
+                });
+            }
+        }
         try {
             const UA = request.headers.get('User-Agent') || 'null';
             const userAgent = UA.toLowerCase();
